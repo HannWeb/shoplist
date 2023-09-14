@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="reader" width="600px"></div>
+<p id="readerResult"></p>
+
+</body>
+<script crossorigin="anonymous" src="https://unpkg.com/html5-qrcode">
+</script>
+<script>
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+
+    function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+     const para = document.createElement("p");
+    const node = document.createTextNode(decodedText);
+    para.appendChild(node);
+    const element = document.getElementById("readerResult");
+    element.appendChild(para);
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+    html5QrcodeScanner.clear();
+    // ^ this will stop the scanner (video feed) and clear the scan area.
+}
+
+html5QrcodeScanner.render(onScanSuccess);
+
+</script>
+</html>
