@@ -13,10 +13,8 @@
     <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
     <!-- https://favicon.io/emoji-favicons/money-bag/ -->
-    <link href="" rel="icon">
-    {% block scripts %} {% endblock %}
-
-    <title>C$50 Finance: {% block title %}{% endblock %}</title>
+    <link href="static/favicon.ico" rel="icon">
+    <title>ShoppingList {% block title %}{% endblock %}</title>
 
 </head>
 
@@ -24,8 +22,9 @@
 
 <nav class="bg-light border navbar navbar-expand-md navbar-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/"><span class="blue">C</span><span class="red">$</span><span
-                class="yellow">5</span><span class="green">0</span> <span class="red">Finance</span></a>
+        <a class="navbar-brand" href="/">
+            <span class="Blue">ShoppingList</span>
+        </a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
                 data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -45,6 +44,8 @@
             <ul class="navbar-nav ms-auto mt-2">
                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="/new_product">New Product</a></li>
+                <li class="nav-item"><a class="nav-link" href="/list">New list</a></li>
             </ul>
             {% endif %}
         </div>
@@ -64,9 +65,9 @@
 </main>
 
 <footer class="mb-5 small text-center text-muted">
-    Data provided by <a href="https://iexcloud.io/">IEX</a>
+    powered by <a href="HannWeb.co">HannWeb.co</a>
 </footer>
 
 </body>
-
+{% block scripts %} {% endblock %}
 </html>
