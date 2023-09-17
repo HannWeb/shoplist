@@ -1,19 +1,74 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    New Product
+New Product
 {% endblock %}
 {% block main %}
 
 <section>
-    <form action="/list" class="row justify-content-center" method="post">
-        <div class="mb-3 col-auto">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Symbol" type="text">
+    <form action="/new_product" method="post" class="row g-3 align-self-start">
+        <div class="col-9">
+            <input autocomplete="off" autofocus class="form-control mx-auto" id="barcode" name="barcode"
+                   placeholder="barcode" type="number">
         </div>
-        <div class="col-auto">
-            <button class="btn btn-primary" type="submit">Search</button>
+        <div class="col-3 my-auto">
+            <i class="bi bi-upc-scan"
+               data-bs-toggle="modal"
+               id="barcodeButton"
+               data-bs-target="#barcodeModal"
+               style="font-size: 30px; color: blue;"></i>
+            <!-- Modal -->
+            <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-body">
+                        <div class="modal-content">
+                            <div id="reader" width="600px"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="col-9">
+            <input class="form-control mx-auto" id="name" name="name"
+                   placeholder="Product Name" type="text">
+        </div>
+        <div class="col-3">
+            <input class="form-control mx-auto" id="quantity" name="quantity"
+                   placeholder="1" type="number">
+        </div>
+        <div class="col-6">
+            <input class="form-control mx-auto" id="price" name="price"
+                   placeholder="10.00" type="number">
+        </div>
+        <div class="col-6">
+            <input class="form-control mx-auto" id="store" name="store"
+                   placeholder="Store Name / location" type="text">
+        </div>
+        <div class="form-check col-7 text-left">
+            <input class="form-check-input" type="checkbox" value="" id="package">
+            <label class="form-check-label" for="package">
+                Is package?
+            </label>
+        </div>
+        <div class="col-6">
+            <input class="form-control mx-auto" id="package_units" name="store"
+                   placeholder="Store Name / location" type="text">
+        </div>
+        <div class="col-6">
+            <input class="form-control mx-auto" disabled id="unit_price" name="store"
+                   placeholder="Price per unit" type="text">
+        </div>
+        <button class="btn btn-primary btn-small" type="submit">Add</button>
     </form>
 </section>
 
 {%endblock%}
+
+{% block scripts %}
+<script crossorigin="anonymous" src="https://unpkg.com/html5-qrcode"></script>
+<script src="{{url_for('static', filename='./scripts/code_reader.js')}}"></script>
+{% endblock %}

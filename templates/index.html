@@ -21,7 +21,7 @@ Scan
     function onScanSuccess(decodedText, decodedResult) {
     // Handle on success condition with the decoded text or result.
     console.log(`Scan result: ${decodedText}`, decodedResult);
-     const para = document.createElement("p");
+    const para = document.createElement("p");
     const node = document.createTextNode(decodedText);
     para.appendChild(node);
     const element = document.getElementById("readerResult");
