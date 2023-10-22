@@ -5,5 +5,19 @@
 {% endblock %}
     list of products
 {% block main %}
-    list
+<section class="d-grid d-flex justify-content-end p-2 px-2">
+    <a class="btn btn-primary col-6" role="button" href="/new_product">
+        Add a new product
+        <i class="bi bi-plus-square-fill ps-2"></i>
+    </a>
+</section>
+<section class="list-group py-2">
+    {% for list in lists %}
+    <a href="#" class="list-group-item list-group-item-action active"
+       id="1">
+        "{{lists[0][1]}}"
+    </a>
+    {% endfor %}
+
+</section>
 {% endblock %}

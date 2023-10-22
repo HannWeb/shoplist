@@ -1,9 +1,32 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Dashboard
+Dashboard
 {% endblock %}
-    dashboard when logged in
+dashboard when logged in
 {% block main %}
+
+<form class=" row p-2 px-2 align-items-center" action="/dashboard" method="post">
+    <div class="col-8">
+        <input autocomplete="off" autofocus class="form-control" id="name" name="name" placeholder="List Name"
+               type="text">
+    </div>
+    <button class="btn btn-primary col-4" type="submit">
+        Add a list
+        <i class="bi bi-bag-plus-fill ps-2"></i>
+    </button>
+</form>
+<h1 class="mt-4">My shopping lists</h1>
+
+<section class="list-group py-2">
+    {% for list in lists %}
+    <a href={{url_for("products_list",list_id=lists[0][0])}} class="list-group-item list-group-item-action active"
+       id={{lists[0][0]}}>
+        {{lists[0][1]}}
+    </a>
+    {% endfor %}
+
+</section>
+
 
 {%endblock%}
