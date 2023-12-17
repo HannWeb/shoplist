@@ -2,10 +2,13 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, db, read_db_response, validate_field
+from helpers import apology, login_required, db, read_db_response, currency
 
 # Configure application
 app = Flask(__name__)
+
+# Custom filter
+app.jinja_env.filters["currency"] = currency
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -90,6 +93,17 @@ def login():
         return render_template("login.html")
 
 
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     """sign up"""
@@ -113,7 +127,6 @@ def signup():
         last_name = request.form.get("last_name")
         username = request.form.get("username")
         password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
 
         # ensure username does exist in the database.
         cursor = db.cursor()
@@ -158,8 +171,9 @@ def new_product():
         package = 0 if not request.form.get("package") else request.form.get("package")
         pkg_units = 0 if not request.form.get("pkg_units") else request.form.get("pkg_units")
         in_cart = 1  # need to figure it out
+        price = int(float(request.form.get("price"))*100)
 
-        # Ensure product not exist in the database
+        # Ensure product does not exist in the database
         cursor = db.cursor()
         query_product = "SELECT id FROM products WHERE barcode = %s AND user_id = %s"
         data_product = (barcode, session["user_id"])
@@ -173,6 +187,7 @@ def new_product():
         if len(data) == 0:
             # Add product
             add_product = "insert into products (barcode, name, category, user_id) values (%s, %s, %s, %s)"
+            print(barcode)
             data_product = (barcode, name, category, session["user_id"])
             cursor.execute(add_product, data_product)
             # save product id:
@@ -190,28 +205,109 @@ def new_product():
                     "package_units, user_id, list_id, in_cart, price, quantity) " \
                     "values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         # store product id value
+
         data_price = (session.get("product_id"), 1, package, pkg_units, session["user_id"],
-                      session["list_id"], in_cart, request.form.get("price"), request.form.get("quantity"))
+                      session["list_id"], in_cart, price, request.form.get("quantity"))
         cursor.execute(add_price, data_price)
         db.commit()
         cursor.close()
-        # TODO: how not store the same price multiple times (updating the product of the same day?)
         return redirect(url_for("products_list", list_id=session.get("list_id")))
     else:
-        return render_template("new_product.html")
+        # ensure list id is present
+        if "product_id" not in request.args:
+            return render_template("new_product.html")
+        session["product_id"] = request.args.get("product_id")
+        cursor = db.cursor()
+        query_product = "select * " \
+                        "from prices " \
+                        "inner join products on prices.product_id = products.id " \
+                        "where prices.id in (" \
+                        "select id " \
+                        "from prices " \
+                        "where prices.id = %s " \
+                        "group by product_id " \
+                        "having count(id)" \
+                        ")"
+        data_product = session["product_id"]
+        cursor.execute(query_product, [data_product])
+        data = read_db_response(cursor)
+        return render_template("edit_product.html", data=data)
 
+
+# TODO: delete product
+# TODO: delete list
+# TODO: update list
 
 @app.route("/list")
+@login_required
 def products_list():
-    # TODO: display products in a list, if more than instance of the same product. show the latest
-    print(request.args)
+    # ensure list id is present
     if "list_id" not in request.args:
         return apology("Invalid List", 400)
+
+    # save list id in the cookies
     session["list_id"] = request.args.get("list_id")
-    return render_template("list.html")
+
+    # get data from database
+    cursor = db.cursor()
+    query_list = "select * " \
+                 "from prices " \
+                 "inner join products on prices.product_id = products.id " \
+                 "where prices.id in ( " \
+                 "select id " \
+                 "from prices " \
+                 "where prices.user_id = %s and prices.list_id = %s " \
+                 "group by product_id having count(id)" \
+                 ")"
+    data_list = (session["user_id"], session["list_id"])
+    cursor.execute(query_list, data_list)
+    data = read_db_response(cursor)
+    cursor.close()
+
+    # separate list in two (checked and unchecked)
+    checked = []
+    unchecked = []
+    totals = {"amount": 0, "in_cart": 0, "in_list": 0, "total_q": 0}
+    for product in data:
+        totals["total_q"] += product[10]
+        if product[7] == 0:
+            checked.append(product)
+            totals["amount"] += (product[9] * product[10])
+            totals["in_cart"] += product[10]
+        else:
+            unchecked.append(product)
+        totals["in_list"] = totals["total_q"] - totals["in_cart"]
+    return render_template("list.html", checked=checked, unchecked=unchecked, totals=totals)
+
+
+@app.route("/edit_product", methods=["POST"])
+@login_required
+def edit_product():
+    if request.method == "POST":
+        price_id = request.form.get("id")
+        # if it is to edit the product, redirect to new product
+        if request.form.get("edit") == "Edit":
+            return redirect(url_for("new_product", product_id=price_id))
+        # if something check or uncheck open database and update product
+        cursor = db.cursor()
+        update_product = "update prices set in_cart = %s where id = %s"
+        data_product = ()
+        if request.form.get("check") == "Check":
+            data_product = (0, price_id)
+        elif request.form.get("uncheck") == "Uncheck":
+            data_product = (1, price_id)
+        else:
+            return apology(f"incorrect user or product id ", 400)
+        cursor.execute(update_product, data_product)
+        db.commit()
+        cursor.stored_results()
+        cursor.close()
+        return redirect(url_for("products_list", list_id=session.get("list_id")))
+    else:
+        return apology(f"incorrect user or product id ", 400)
 
 
 @app.route("/history")
 def history():
     """show previous lists"""
-    return render_template("history.html")
+

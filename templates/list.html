@@ -1,23 +1,79 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    list
+list
 {% endblock %}
-    list of products
+list of products
 {% block main %}
-<section class="d-grid d-flex justify-content-end p-2 px-2">
-    <a class="btn btn-primary col-6" role="button" href="/new_product">
-        Add a new product
-        <i class="bi bi-plus-square-fill ps-2"></i>
-    </a>
-</section>
-<section class="list-group py-2">
-    {% for list in lists %}
-    <a href="#" class="list-group-item list-group-item-action active"
-       id="1">
-        "{{lists[0][1]}}"
-    </a>
-    {% endfor %}
 
-</section>
+<div class="container">
+    <section class="d-grid d-flex justify-content-end mb-2">
+        <a class="btn btn-primary col-6" role="button" href="/new_product">
+            Add Product
+            <i class="bi bi-plus-square-fill ps-2"></i>
+        </a>
+    </section>
+    <section class="list-group border" style="height: 30vh; overflow-y: scroll;">
+        {% for product in unchecked %}
+        <ul class="list-group-item list-group-item-action m-0">
+            <div class="row">
+                <div class="col-7">
+                    <h6 class="text-start">{{product[13]}} Q({{product[10]}})</h6>
+                    <div class="row">
+                        <div class="col-4">
+                            <h6>{{((product[9] * product[10])/100)| currency}}</h6>
+                        </div>
+                        <div class="col-8">
+                            <h6 class="small">last price: {{(product[9] / 100) | currency}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <form action="/edit_product" method="post" class="col-5">
+                    <input name="id" type="hidden" value={{product[0]}}>
+                    <input class="btn btn-primary" name="edit" value="Edit" type="submit"/>
+                    <input class="btn btn-primary" name="check" value="Check" type="submit"/>
+                </form>
+            </div>
+        </ul>
+        {% endfor %}
+    </section>
+    <h4>In-cart</h4>
+    <section class="list-group border p-0"
+             style="height: 30vh; overflow-y: scroll; text-decoration: line-through; color: gray">
+        {% for product in checked %}
+        <ul class="list-group-item list-group-item-action m-0 text-muted">
+            <div class="row">
+                <div class="col-7">
+                    <h6 class="text-start">{{product[13]}} Q({{product[10]}})</h6>
+                    <div class="row">
+                        <div class="col">
+                            <h6>{{((product[9] * product[10])/100) | currency}}</h6>
+                        </div>
+                        <div class="col">
+                            <h6 class="small">last price: {{(product[9] / 100) | currency}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <form action="/edit_product" method="post" class="col-5">
+                    <input name="id" type="hidden" value={{product[0]}}>
+                    <input class="btn btn-primary" name="uncheck" value="Uncheck" type="submit"/>
+                </form>
+            </div>
+        </ul>
+        {% endfor %}
+    </section>
+    <h4>Summary</h4>
+    <section class="row px-2">
+        <div class="col-5 text-start">
+            <h6>Cart Total: {{(totals["amount"]/100) | currency}}</h6>
+        </div>
+        <div class="col-5 text-end">
+            <h6>Items in Cart: {{totals["in_cart"]}}</h6>
+            <h6>Items in List: {{totals["in_list"]}}</h6>
+        </div>
+
+
+    </section>
+
+</div>
 {% endblock %}

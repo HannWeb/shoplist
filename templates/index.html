@@ -1,38 +1,135 @@
 {% extends "layout.html" %}
-{% block title %}
-Scan
+{% block header %}
+<link href="/static/styles/index.css" rel="stylesheet">
 {% endblock %}
+
 {% block main %}
-<div id="reader" width="600px"></div>
-<p id="readerResult"></p>
+<section class="index-section-1 p-4">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div>
+                <i class="bi bi-envelope-at"
+                   style="font-size: 14px; color: white;"></i>
+                <a class="link-light" href="mailto:info@hannweb.co">info@hannweb.co</a>
+                <a></a>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-4">
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-2 justify-content-center">
+            <div class="col">
+                <div class="section-1-box"></div>
+                <div class="section-1-text p-4 rounded">
+                    <h1 class="text-primary">Control how much you spend on groceries</h1>
+                    <p class="text-black">ShoppingLists is an application that will help you to control the spend on the
+                        groceries by simply
+                        scanning the barcode and adding the price. With this you will be able to know for sure how much
+                        the
+                        spent is, and be always below budget</p>
+                    <h3><a href="signup" class="link-dark">Create your account now</a></h3>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="col-1 section-1-image mt-4"></div>
+            </div>
+        </div>
 
-<form>
+    </div>
+</section>
 
-</form>
+<section class="index-section-2 my-4 container">
+    <div>
+        <h3>About our App</h3>
+        <p class="m-4">
+            Easily create lists, scan product's barcodes and take control of your super.
+            Be aware of how much you spend and be on budget.
+        </p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 justify-content-center">
+        <img class="col-md-4 mt-4 pt-4" src="/static/pictures/new_product.png" alt="Add new product" width="100">
+        <div class="row row-cols-1 g-4">
+            <div class="col">
+                <div class="card my-2">
+                    <div class="card-body text-start row">
+                        <i class="col-1 bi bi-check-circle-fill" style="color: green;"></i>
+                        <div class="col-10">
+                            <h5 class="card-title">Easy to Use</h5>
+                            <p class="card-text">This app was created for easy and intuitive use.
+                                Just create your list, scan and start saving. </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card my-2">
+                    <div class="card-body text-start row">
+                        <i class="col-1 bi bi-check-circle-fill" style="color: green;"></i>
+                        <div class="col-10">
+                            <h5 class="card-title">Keep Track</h5>
+                            <p class="card-text">keep track of your grocery expense and compare your spend
+                                with previous months to keep your personal finance under control.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card my-2">
+                    <div class="card-body text-start row">
+                        <i class="col-1 bi bi-check-circle-fill" style="color: green;"></i>
+                        <div class="col-10">
+                            <h5 class="card-title">Best User Experience</h5>
+                            <p class="card-text">This app was created for easy use and thinking on the time
+                                you spend on the grocery store.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{% endblock %}
-{% block scripts %}
-<script crossorigin="anonymous" src="https://unpkg.com/html5-qrcode">
-</script>
-<script>
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader", { fps: 10, qrbox: 250 });
+</section>
 
-    function onScanSuccess(decodedText, decodedResult) {
-    // Handle on success condition with the decoded text or result.
-    console.log(`Scan result: ${decodedText}`, decodedResult);
-    const para = document.createElement("p");
-    const node = document.createTextNode(decodedText);
-    para.appendChild(node);
-    const element = document.getElementById("readerResult");
-    element.appendChild(para);
-    console.log(`Scan result: ${decodedText}`, decodedResult);
-    html5QrcodeScanner.clear();
-    // ^ this will stop the scanner (video feed) and clear the scan area.
-}
+<section class="index-section-3 mt-4">
+    <div class="container">
+        <div>
+            <h3>App Features (spoiler alert)</h3>
+            <p class="m-4">
+                Data is locked only to your profile, the historical information and recommendations will be only based
+                on
+                your own activity.
+            </p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 justify-content-center align-items-center">
+            <div class="col-md-3">
+                <div>
+                    <i class="bi bi-list-stars" style="font-Size: 50px"></i>
+                    <h3>Scan an save product</h3>
+                    <p>Use the barcodes to store the product and uniquely identify it </br>
+                        Spoiler: we will use the barcode to populate previous information about the product.</p>
+                </div>
+                <div>
+                    <i class="bi bi-list-stars" style="font-Size: 50px"></i>
+                    <h3>Multiplatform</h3>
+                    <p>we have created this application as a website,
+                        but we will create an application for Android and apple.</p>
+                </div>
+            </div>
+            <div class="col-md-4 image-list-of-products"></div>
+            <div class="col-md-3">
+                <div>
+                    <i class="bi bi-list-stars" style="font-Size: 50px"></i>
+                    <h3>Spoiler: Calories</h3>
+                    <p>we will use the barcode to provide you information about the product like calories.</p>
+                </div>
+                <div>
+                    <i class="bi bi-list-stars" style="font-Size: 50px"></i>
+                    <h3>Spoiler: Statistics</h3>
+                    <p>we will use the information you capture in the app to provide you information
+                        about the product prices, increases, discounts, etc..</p>
+                </div>
+            </div>
+        </div>
 
-html5QrcodeScanner.render(onScanSuccess);
-
-
-</script>
+    </div>
+</section>
 {% endblock %}

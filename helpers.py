@@ -69,3 +69,8 @@ def validate_field(source, field_name):
 
     if source.method == "GET":
         print(source.args)
+
+
+def currency(value):
+    """Format value as USD."""
+    return f"${value:,.2f}"
