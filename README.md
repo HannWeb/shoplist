@@ -1,7 +1,6 @@
-# YOUR PROJECT TITLE
-
-#### Video Demo:  <URL HERE>
-#### Test Lab: [shoplist.hannweb.co](shoplist.hannweb.co)
+# SHOPLIST
+#### Video Demo:  [Video](https://youtu.be/acovwJjAwLg)
+#### Test Lab: [www.shoplist.hannweb.co](www.shoplist.hannweb.co)
 
 #### Description:
 
@@ -13,8 +12,8 @@ spent.
 
 ##### Features:
 * Uses barcodes to maintain uniqueness of a product.
-* Privacy is important for us. Therefore, you will only able to see products you added.
-* Every product is linked to a list. and a list can be a store a project or anything is best suitable for you.
+* Privacy is important for us:1. Therefore, you will only able to see products you added.
+* Every product is linked to a list. and a list can be a store a project or anything is suitable for you.
 
 ##### Next Features:
 * Search products based on the barcode read.

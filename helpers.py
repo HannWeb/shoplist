@@ -36,10 +36,10 @@ def login_required(f):
 # Configure database
 def db():
     try:
-        config = {"user": "hannqzwz_superuser", "password": "7a_GG@5z$azU",
+        config = {"user": "DB_USER", "password": "DB_PASSWORD",
                   "host": "127.0.0.1",
                   "port": "3306",
-                  "database": "hannqzwz_shop"}
+                  "database": "DB_NAME"}
         cnx = mysql.connector.connect(**config)
         print(f"connected on port {config['port']}")
     except mysql.connector.Error as err:
