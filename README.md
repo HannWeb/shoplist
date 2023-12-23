@@ -1,4 +1,4 @@
-# SHOOLIST
+# SHOPLIST
 
 #### Video Demo:  <URL HERE>
 #### Test Lab: [shoplist.hannweb.co](shoplist.hannweb.co)
